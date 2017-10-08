@@ -21,6 +21,11 @@ Once you have a result that looks roughly like "examples/videos/raw.mp4", you'll
 
 <img src="examples/images/final.jpg" width="512" alt="Preview of examples/videos/final.mp4." />
 
+Project Structure
+-----------------
+
+TODO: Finish this section.
+
 
 Project Evaluation
 ------------------
