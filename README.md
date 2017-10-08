@@ -3,7 +3,7 @@ CarND · T1 · P1 · Finding Lane Lines Project
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-<img src="laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
+<img src="examples/images/final.jpg" width="512" alt="Final result example." />
 
 
 Project Overview
@@ -13,7 +13,13 @@ When we drive, we use our eyes to decide where to go. The lines on the road that
 
 In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images. You can develop your pipeline on a series of individual images, and later apply the result to a video stream (really just a series of images).
 
-Check out the video clip "raw-lines-example.mp4" (also contained in this repository) to see what the output should look like after using the helper functions provided in the started code. Once you have a result that looks roughly like "raw-lines-example.mp4", you'll need to get creative and try to average and/or extrapolate the line segments you've detected to map out the full extent of the lane lines. You can see an example of the result you're going for in the video "P1_example.mp4". Ultimately, you would like to draw just one line for the left side of the lane, and one for the right.
+Check out the video clip "examples/videos/raw.mp4" (also contained in this repository) to see what the output should look like after using the helper functions provided in the started code:
+
+<img src="examples/images/raw.jpg" width="512" alt="Preview of examples/videos/raw.mp4." />
+
+Once you have a result that looks roughly like "examples/videos/raw.mp4", you'll need to get creative and try to average and/or extrapolate the line segments you've detected to map out the full extent of the lane lines. You can see an example of the result you're going for in the video "example/videos/final.mp4". Ultimately, you would like to draw just one line for the left side of the lane, and one for the right:
+
+<img src="examples/images/final.jpg" width="512" alt="Preview of examples/videos/final.mp4." />
 
 
 Project Evaluation
