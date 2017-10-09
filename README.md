@@ -24,15 +24,17 @@ Once you have a result that looks roughly like "examples/videos/raw.mp4", you'll
 Project Structure
 -----------------
 
-### `assets`:
+The project structure has been changed a bit to have multiple files for multiple purposes instead of a single, massive Jupyter Notebook for all the code.
+
+### `assets`
 
 Input `images` and `videos` for the image processing pipeline. The videos from the Project 6 - Advanced Lane Lines Detection, have been as well, to evaluate how this basic algorithm behaves with those other, harder, scenarios.
 
-### `examples`:
+### `examples`
 
 Example `images` and `videos`.
 
-### `src`:
+### `src`
 
 Source files with the actual proposed solution, organised as follows:
 
