@@ -24,8 +24,31 @@ Once you have a result that looks roughly like "examples/videos/raw.mp4", you'll
 Project Structure
 -----------------
 
-TODO: Finish this section.
+### `assets`:
 
+Input `images` and `videos` for the image processing pipeline. The videos from the Project 6 - Advanced Lane Lines Detection, have been as well, to evaluate how this basic algorithm behaves with those other, harder, scenarios.
+
+### `examples`:
+
+Example `images` and `videos`.
+
+### `src`:
+
+Source files with the actual proposed solution, organised as follows:
+
+- `helpers`: Individual `.py` files that will be used in the Jupyter Notebooks.
+  - `imageProcessing.py`: Functions to process and transform the images in different ways (change color space, blur, Hough
+    transform...).
+  - `lineRegressorWithMemory.py`: Class that uses Linear Regression to extrapolate multiple lines, extracted using the Hough
+    transform and already grouped in left or right, and averages it using the ones extracted previously.
+  - `plot.py`: Helper functions to create grids for the images.
+    
+- `notebook`: Actual project code that will use all the functionality in `helpers` to create a lane line detection pipeline.
+  - `dataExplorationAndParamCalibration.ipynb`: Notebook that uses multiple image processing functions with different params
+    while plotting it's output, to help incrementally build the whole pipeline as the right param values are chosen for each
+    step.
+  - `videoProcessing.ipynb`: Notebook that will apply the final pipeline built in `dataExplorationAndParamCalibration.ipynb` 
+    to the project videos.
 
 Project Evaluation
 ------------------
