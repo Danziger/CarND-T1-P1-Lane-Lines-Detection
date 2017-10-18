@@ -1,8 +1,8 @@
-#**Finding Lane Lines on the Road** 
+# **Finding Lane Lines on the Road** 
 
-##Writeup Template
+## Writeup Template
 
-###You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
+### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
 
 
 **Finding Lane Lines on the Road**
@@ -11,59 +11,85 @@ The goals / steps of this project are the following:
 * Make a pipeline that finds lane lines on the road
 * Reflect on your work in a written report
 
-
 [//]: # (Image References)
 
-[image1]: ./examples/grayscale.jpg "Grayscale"
+[step1]: ./output/images/001%20-%20Color%20Spaces.png "Color Spaces"
+[step2]: ./output/images/002%20-%20Filters.png "Filters"
+[step3]: ./output/images/003%20-%20Region%20-%20of%20-%20Interest.png "Region of Interest"
+[step4]: ./output/images/004%20-%20Gaussian%20Blur.png "Gaussian Blur"
+[step5]: ./output/images/005%20-%20Canny%20Edge%20Detection.png "Canny Edge Detection"
+[step6]: ./output/images/006%20-%20Hough%20Transform.png "Hough Transform"
+[step7]: ./output/images/007%20-%20Line%20Classification.png "Line Classification"
+[step8]: ./output/images/008%20-%20Final%20Result.png "Final Result"
 
 ---
 
 ### Reflection
 
-###1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
 My pipeline consisted of 7 steps:
 
-####Step 1 - Changing color space from RGB to HLS:
+#### Step 1 - Changing color space from RGB to HLS:
 
-First, I convert the images from RGB to HLS, even thought grayscale is suggested, as this offers two additional benefits
-at the cost of a bigger amount of data to process (3 channels instead of 1).
+First, I convert the images from RGB to HLS, even thought grayscale is suggested, at the cost of a bigger amount of data
+to process (3 channels instead of 1), as having a single channel for color (H = Hue), another one for lightness
+(L = Luma) and another one for saturation (S = Saturation) makes it easier for us to create filters than in RGB, where
+those 3 attributes are spread across all its 3 channels. We do this in the next step.
 
-The first one is that lines stand out more clearly regardless of shades and reflections, as their color is further away
-from the road's one (any shade of gray) in this color space.
+![Color Spaces][step1]
 
-Secondly, having a single channel for color (H = Hue), another one for lightness (L = Luma) and another one for
-saturation (S = Saturation) makes it easier for us to create filters than in RGB, where those 3 attributes are spread
-across all its 3 channels. We do this in the next step.
+We can see how the lane lies stand out clearer in HLS than they do in HSV.
 
 
-####Step 2 - Color (yellow and white) filters:
+#### Step 2 - Color (yellow and white) filters:
 
 We know lane lines in our examples are either white or yellow. Therefore, any other information (pixels of any other
-color) are not relevant to us and we can filter them out. To do this we create two filters and merge them together, one
-for white and another one for yellow, considering a range of shades for both that will be considered valid.
+color) is not relevant to us and we can filter it out. To do this we create two filters and merge them together, one for
+white and another one for yellow, considering a range of shades for both that will be considered valid.
 
-Once applied, we can see most non-relevant information, with some exceptions, has already been filtered out.
+Once applied, we can see most non-relevant information, with some exceptions, has already been filtered out:
 
-####Step 3 - Region of interest filter:
+![Filters][step2]
+
+
+#### Step 3 - Region of interest filter:
 
 We know that the lines we are interested in are always inside a centered triangle pointing upwards from the bottom of
 the image to approx. 60 - 70 % of it. We also know those two lines never touch them, so this triangle it's actually
 a trapezium.
 
-We can discard any information outside that area, as whatever we find in there, it's not going to be our lane lines.
+We can discard any information outside that area, as whatever we find in there, it's not going to be our lane lines:
 
-####Step 4 - Gaussian blur:
+
+TODO: Screenshot missing. Change images names and references... UU'
+
+
+#### Step 4 - Gaussian blur:
 
 In order to smooth out noise and small irregularities from the the image, we apply a subtle gaussian blur, that will
 still keep the lane lines in place.
 
-####Step 5 - Canny edge detection:
+Here we can see different parameters for this algorithm:
+
+![Gaussian Blur][step4]
+
+I finally took K = 5.
+
+
+#### Step 5 - Canny edge detection:
 
 In order to detect edges on our image, particularly those around the lane lines, we apply canny edge detection
 algorithm.
 
-####Step 6 - Hough lines:
+Here we can see different parameters for this algorithm:
+
+![Canny Edge Detection][step5]
+
+I finally took T = [50, 100].
+
+
+#### Step 6 - Hough lines:
 
 Now that we have all the edges clearly showing up on the image, we need to extract them as lines to be able to work with
 these lines. To do that, we apply a Hough transform. 
@@ -72,12 +98,30 @@ This will give us a bunch of lines, some of which we are interested in (the ones
 lane lines) and some others which we will discard (top or bottom borders or the lane lines or any other line produced by
 road irregularities, other cars, shadows...).
 
-####Step 7 - Hough lines filtering and classification:
+Here we can see different parameters for this algorithm:
+
+![Hough Transform][step6]
+
+I finally took:
+- rho = 2
+- theta = np.pi / 180
+- threshold = 30,
+- minLineLength = 20
+- maxLineLength = 80
+
+
+#### Step 7 - Hough lines filtering and classification:
 
 Using each line's slope and position we can distinguish those on the right side of the image from those on the left
-one, and discard those which's slope is too big or too small. 
+one, and discard those which's slope is too big or too small:
 
-####Step 8 - Fitting a linear model:
+![Line Classification][step7]
+
+Notice how, in the second image (007 - Challenge Shadow.jpg), some lines have been discarded based on their slope (the
+cyan ones).
+
+
+#### Step 8 - Fitting a linear model:
 
 Next, I fit a linear model to the points of right lines and another one to those of left lines. Each point will have a
 weight based on the length of the line it belonged to, so the 2 points of a long line will have a bigger impact on the
@@ -87,9 +131,15 @@ It's important to mention that the resulting line is a weighted combination of t
 N previous ones (N = 8 in the current pipeline), with the weights being 1, 2, ..., N + 1, so that the more recent
 information always has a bigger impact than the old one.
 
-####Step 9 - Drawing the lines on the image:
+This will make the lines drawn on the videos change smoothly.
 
-Lastly, I just draw the two resulting lines on top of the original image.
+
+#### Step 9 - Drawing the lines on the image:
+
+Lastly, I just draw the two resulting lines on top of the original image:
+
+![Final Result][step8]
+
 
 
 
@@ -104,7 +154,7 @@ If you'd like to include images to show how the pipeline works, here is how to i
 
 
 
-###2. Identify potential shortcomings with your current pipeline
+### 2. Identify potential shortcomings with your current pipeline
 
 
 One potential shortcoming would be what would happen when ... 
@@ -112,7 +162,7 @@ One potential shortcoming would be what would happen when ...
 Another shortcoming could be ...
 
 
-###3. Suggest possible improvements to your pipeline
+### 3. Suggest possible improvements to your pipeline
 
 A possible improvement would be to ...
 

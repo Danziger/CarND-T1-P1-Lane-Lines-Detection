@@ -1,7 +1,6 @@
-from scipy.ndimage.filters import gaussian_filter
-from scipy import stats
 from collections import deque
 from sklearn.linear_model import LinearRegression
+
 import cv2
 import numpy as np
 
