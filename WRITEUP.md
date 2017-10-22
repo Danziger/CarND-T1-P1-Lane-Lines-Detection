@@ -146,13 +146,39 @@ Lastly, I just draw the two resulting lines on top of the original image:
 ### 2. Identify potential shortcomings with your current pipeline
 
 
-One potential shortcoming would be what would happen when ... 
+One potential shortcoming would be what we can see in `003 - Challenge.mp4` as the discontinuous lane line's portions
+approach and disappear, causing the fitted line to wiggle slightly. Although we could improve that by having a bigger
+queue to store more of the previous lines' attributes, or changing the weights so that the most recent values are
+not so much more important than the previous ones, that would also mean the fitted line would have a harder time trying
+to match the changes on the road, causing other problems like the ones we can see in `006 - Advanced Project Harder
+Challenge.mp4`
 
-Another shortcoming could be ...
+Another shortcoming could be that any signs painted in the middle of the lane, like those in `005 - Advanced Project
+Challenge.png`, will be also interpreted as lane lines. Although this has currently been partially fixed with a region
+filter, that may not be the best approach and doesn't totally mitigate the problem, as we can clearly see if we compare 
+`005 - Advanced Project Challenge.png` with any of the previous videos.
+
+One of the biggest limitations of the current pipeline is using a linear model, as the sharpest the curves on the
+image/video are, the worse the results will be, which we can clearly see in the last video `006 - Advanced Project
+Harder Challenge.mp4`.
+
+Lastly, another big restriction of this pipeline is that it has been designed to identify a single pair of lane lines
+and only once the car has already been centered between them, otherwise they will probably be incorrectly filtered out 
+by the region filter.
 
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to ...
+To fix the buffering issues, the weights could be changed dynamically, probably using the variance to give more or less
+priority to the new values or to the old ones.
 
-Another potential improvement could be to ...
+Another thing that is currently being done with fix values but could be improved by dynamically setting them is
+filtering segments extracted using the Hough Transform based on their slope. Probably, the limit values used to discard
+them should depend on previous values. This will probably improve the results in `006 - Advanced Project Harder
+Challenge.mp4` as much as possible with a linear model.
+
+The next improvement would be to fit a more complex model, let's say a polynomial one, to be able to precisely detect
+the lane lines on curvy roads.
+
+Lastly, we could remove or change the region filter and use a clustering algorithm like K-Means to be able to identify
+multiple lanes and lane lines.
