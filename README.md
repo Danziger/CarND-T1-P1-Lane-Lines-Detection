@@ -57,16 +57,15 @@ Source files with the actual proposed solution, organised as follows:
 Project Evaluation
 ------------------
 
-To complete the project, two files will be submitted: a file containing project code and a file containing a brief writeup explaining your solution, which can be either a markdown file or a pdf document. To meet specifications in the project, take a look at the requirements in the [project rubric](https://review.udacity.com/#!/rubrics/322/view).
+The project's writeup can be found [here](WRITEUP.md).
 
-For this project, a great writeup should provide a detailed response to the "Reflection" section of the [project rubric](https://review.udacity.com/#!/rubrics/322/view). There are three parts to the reflection:
+According to the provided guidelines, a great writeup should provide a detailed response to the "Reflection" section of
+the [project rubric](https://review.udacity.com/#!/rubrics/322/view) and include images to demonstrate how the pipeline
+works. There are three parts to the reflection:
+
 1. Describe the pipeline
 2. Identify any shortcomings
 3. Suggest possible improvements
-
-We encourage using images in your writeup to demonstrate how your pipeline works.
-
-All that said, please be concise! We're not looking for you to write a book here: just a brief description.
 
 
 Running The Project
