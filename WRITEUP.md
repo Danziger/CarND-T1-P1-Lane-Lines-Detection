@@ -1,6 +1,16 @@
 CarND · T1 · P1 · Lane Lines Detection Project Writeup
 ======================================================
 
+First of all, the results of the project can be found in YouTube:
+
+1. [001 - Solid White Right](https://www.youtube.com/watch?v=7lb80iyGGQg)
+2. [002 - Solid Yellow Left](https://www.youtube.com/watch?v=Z0tW4WkQuX4)
+3. [003 - Challenge](https://www.youtube.com/watch?v=297dPtA9Dyo)
+4. [004 - Advanced Project](https://www.youtube.com/watch?v=WwJK1KPRNBY)
+5. [005 - Advanced Project Challenge](https://www.youtube.com/watch?v=kqs4HaXPYHM)
+6. [006 - Advanced Project Harder Challenge](https://www.youtube.com/watch?v=IaIpqANF8XY)
+
+
 [//]: # (Image References)
 
 [step1]: ./output/images/001%20-%20Color%20Spaces.png "Color Spaces"
