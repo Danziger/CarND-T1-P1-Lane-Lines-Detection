@@ -10,6 +10,15 @@ def rgb2hls(img):
     return cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
 
 
+def hls2gray(img):
+    return cv2.cvtColor(img, cv2.COLOR_HLS2GRAY)
+
+
+def bgr2gray(img):
+    # Use when reading an image with cv2.imread()
+    return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+
 def yellowHlsFilter(img):
     # H in [0, 180], S in [0, 255], L in [0, 255]
     # See http://hslpicker.com
@@ -38,14 +47,7 @@ def yellowAndWhiteRgbFiltered(img):
     return cv2.bitwise_and(img, img, mask=yellowAndWhiteHlsFilter(rgb2hls(img)))
 
 
-def grayscale(img):
-    return cv2.cvtColor(img, cv2.COLOR_HLS2GRAY)
-
-    # Or use BGR2GRAY if you read an image with cv2.imread()
-    # return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-
-def region_of_interest(img, vertices):
+def regionOfInterestFilter(img, vertices):
     """
     Applies an image mask.
 
@@ -69,7 +71,7 @@ def region_of_interest(img, vertices):
     return cv2.bitwise_and(img, mask)
 
 
-def gaussian_blur(img, kernel_size=3):
+def gaussianBlur(img, kernel_size=3):
     return cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
 
 
@@ -77,24 +79,25 @@ def canny(img, low_threshold, high_threshold):
     return cv2.Canny(img, low_threshold, high_threshold)
 
 
-def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
+def houghLines(img, rho, theta, threshold, min_line_len, max_line_gap):
     return cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len, maxLineGap=max_line_gap)
 
 
-# TODO: Rename this functions and params!
-
-def draw_lines(img, lines, color=[255, 0, 0], thickness=5, make_copy=True):
+def drawLines(img, lines, color=(255, 0, 0), thickness=10, make_copy=True):
     # Copy the passed image
     img_copy = np.copy(img) if make_copy else img
 
     for line in lines:
-        for x1,y1,x2,y2 in line:
+        for x1, y1, x2, y2 in line:
             cv2.line(img_copy, (x1, y1), (x2, y2), color, thickness)
 
     return img_copy
 
 
-def classifyLinesPoints(lines):
+def classifyLinesPoints(lines, width):
+    centerLeft = width * 0.4
+    centerRight = width * 0.6
+
     # Classify the points based on their slope:
 
     rightPointsX = []
@@ -113,10 +116,6 @@ def classifyLinesPoints(lines):
 
             # Ignore suspicious lines:
 
-            # if ((y2-y1)/(x2-x1)) > 0:
-
-            # TODO: Also check that all points are in left or right side of the image!
-
             slopeAbs = np.abs(slope)
             slopeMin = 1 / 3
             slopeMax = 3
@@ -130,16 +129,18 @@ def classifyLinesPoints(lines):
 
             length = np.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
 
-            if slope > 0:
+            if slope > 0 and x1 > centerLeft and x2 > centerLeft:
                 rightPointsX.extend([x1, x2])
                 rightPointsY.extend([y1, y2])
                 rightWeights.extend([length, length])
                 rightLines.append([[x1, y1, x2, y2]])
-            elif slope < 0:
+            elif slope < 0 and x1 <= centerRight and x2 <= centerRight:
                 leftPointsX.extend([x1, x2])
                 leftPointsY.extend([y1, y2])
                 leftWeights.extend([length, length])
                 leftLines.append([[x1, y1, x2, y2]])
+            else:
+                discardedLines.append([[x1, y1, x2, y2]])
 
     return dict(
         right=dict(X=rightPointsX, Y=rightPointsY, weights=rightWeights, lines=rightLines),

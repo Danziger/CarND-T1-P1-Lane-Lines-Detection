@@ -18,62 +18,57 @@ class LineStream:
         self.intercepts = deque(maxlen=size)
         self.weights = list(range(1, size+1, 1))
 
-    def drawLineFromPoints(self, image, X, Y, weights, color):
-        #  Apply Linear Regression to fit a line model to those points:
-
-        # slope, intercept, R, P, stdErr = stats.linregress(np.array(points))
-
+    def drawLineFromPoints(self, image, X, Y, weights, thickness=10, color=(255, 0, 0)):
         matX = np.matrix(X)
 
-        if matX.shape[1] is not 0:
-            reg = LinearRegression()
+        HEIGHT = image.shape[0]
+        WIDTH = image.shape[1]
 
+        if matX.shape[1] is not 0:
+            # Apply Linear Regression to fit a line model to the points:
+
+            reg = LinearRegression()
             reg.fit(np.transpose(np.matrix(X)), np.transpose(np.matrix(Y)), weights)
 
-            coef = float(reg.coef_)
+            slope = float(reg.coef_)
             intercept = float(reg.intercept_)
 
-            # print(coef, intercept)
-
-            self.slopes.append(coef)
+            self.slopes.append(slope)
             self.intercepts.append(intercept)
+        else:
+            # Something is wrong, so draw a border around the image:
 
-            # print(self.slopes, self.intercepts)
-            # print(self.weights[-len(self.slopes):10])
+            cv2.rectangle(image, (0, 0), (WIDTH, HEIGHT), color, thickness * 2)
 
-        slope = np.average(self.slopes, weights=self.weights[-len(self.slopes):self.size])
-        intercept = np.average(self.intercepts, weights=self.weights[-len(self.intercepts):self.size])
+            # If we don't have any data yet, don't do anything, otherwise use previous data:
 
-        # print(slope, intercept)
+            if len(self.slopes) is 0:
+                return
 
-        # Ignore suspicious lines and keep the last correct one:
+        # Calculate new line attributes based on fitted line and previous values:
 
-        # global lastSlope
-        # global lastIntercept
+        currentItems = len(self.slopes)
 
-        # if lastSlope is not None and lastIntercept is not None:
-        #     slope = 0.75 * slope + 0.25 * lastSlope
-        #     intercept = 0.75 * intercept + 0.25 * lastIntercept
+        slope = np.average(self.slopes, weights=self.weights[-currentItems:self.size])
+        intercept = np.average(self.intercepts, weights=self.weights[-currentItems:self.size])
 
-        if slope < 0.2 and slope > -0.2:
-            # For debugging of suspicious lines:
+        if abs(slope) < 0.2: # TODO: Use realative values
+            # Suspicious slope (too big). Just use previous one:
 
-            #  color = [255, 0, 255]
+            cv2.rectangle(image, (0, 0), (WIDTH, HEIGHT), color[::-1], thickness * 2)
+
+            # slope = self.slopes[-2]
+            # intercept = self.intercepts[-2]
+
+            # self.slopes[-1] = slope
+            # self.intercepts[-1] = intercept
+
+            # Draw individual points:
 
             for i in range(len(X)):
-                cv2.circle(image, (X[i], Y[i]), 5, [50, 0, 255], 20)
+                cv2.circle(image, (X[i], Y[i]), thickness, color[::-1], -thickness)
 
-            # if lastSlope is not None and lastIntercept is not None:
-                # slope = lastSlope
-                # intercept = lastIntercept
-        else:
-            # lastSlope = slope
-            # lastIntercept = intercept
-            pass
-
-        #  Convert pairs (slope, intercept) in (x, y):
-
-        HEIGHT = image.shape[0]
+        # Convert pairs (slope, intercept) in (x, y):
 
         y1 = int(0.60 * HEIGHT)
         y2 = int(1.00 * HEIGHT)
@@ -82,6 +77,4 @@ class LineStream:
 
         # Draw the two lines in different colors:
 
-        THICKNESS = 15
-
-        cv2.line(image, (x1, y1), (x2, y2), color, THICKNESS)
+        cv2.line(image, (x1, y1), (x2, y2), color, thickness)

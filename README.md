@@ -21,6 +21,7 @@ Once you have a result that looks roughly like "examples/videos/raw.mp4", you'll
 
 <img src="examples/images/final.jpg" width="512" alt="Preview of examples/videos/final.mp4." />
 
+
 Project Structure
 -----------------
 
@@ -51,6 +52,7 @@ Source files with the actual proposed solution, organised as follows:
     step.
   - `videoProcessing.ipynb`: Notebook that will apply the final pipeline built in `dataExplorationAndParamCalibration.ipynb` 
     to the project videos.
+
 
 Project Evaluation
 ------------------

@@ -1,15 +1,5 @@
-# **Finding Lane Lines on the Road** 
-
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
-
-
-**Finding Lane Lines on the Road**
-
-The goals / steps of this project are the following:
-* Make a pipeline that finds lane lines on the road
-* Reflect on your work in a written report
+CarND · T1 · P1 · Lane Lines Detection Project Writeup
+======================================================
 
 [//]: # (Image References)
 
@@ -22,9 +12,18 @@ The goals / steps of this project are the following:
 [step7]: ./output/images/007%20-%20Line%20Classification.png "Line Classification"
 [step8]: ./output/images/008%20-%20Final%20Result.png "Final Result"
 
----
 
-### Reflection
+Project Goals
+-------------
+
+The goals / steps of this project are the following:
+
+* Make a pipeline that finds lane lines on the road
+* Reflect on your work in a written report
+
+
+Project Reflection
+------------------
 
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
@@ -59,10 +58,13 @@ We know that the lines we are interested in are always inside a centered triangl
 the image to approx. 60 - 70 % of it. We also know those two lines never touch them, so this triangle it's actually
 a trapezium.
 
-We can discard any information outside that area, as whatever we find in there, it's not going to be our lane lines:
+When I tested my project with the challenge videos of the Advanced Lane Lines Project, I found out I should also filter
+a smaller triangle area that corresponds to the space between both lines (as there could be signs painted on the road)
+and also leave a small margin at the bottom of the image, as the hood of the car may appear in that section.
 
+Any information outside that area can be discarded, as whatever it is, it's not going to be a lane lines:
 
-TODO: Screenshot missing. Change images names and references... UU'
+![Region of Interest][step3]
 
 
 #### Step 4 - Gaussian blur:
@@ -104,7 +106,7 @@ Here we can see different parameters for this algorithm:
 
 I finally took:
 - rho = 2
-- theta = np.pi / 180
+- theta = PI / 180
 - threshold = 30,
 - minLineLength = 20
 - maxLineLength = 80
@@ -139,19 +141,6 @@ This will make the lines drawn on the videos change smoothly.
 Lastly, I just draw the two resulting lines on top of the original image:
 
 ![Final Result][step8]
-
-
-
-
-
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
-
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
-
-![alt text][image1]
-
-
-
 
 
 ### 2. Identify potential shortcomings with your current pipeline
