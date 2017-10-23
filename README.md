@@ -79,6 +79,7 @@ The results of the project can be found in YouTube:
 3. [003 - Challenge](https://www.youtube.com/watch?v=297dPtA9Dyo)
 4. [004 - Advanced Project](https://www.youtube.com/watch?v=WwJK1KPRNBY)
 5. [005 - Advanced Project Challenge](https://www.youtube.com/watch?v=kqs4HaXPYHM)
+6. [006 - Advanced Project Harder Challenge](https://www.youtube.com/watch?v=IaIpqANF8XY)
 
 
 Running The Project
