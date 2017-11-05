@@ -27,9 +27,9 @@ Project Structure
 
 The project structure has been changed a bit to have multiple files for multiple purposes instead of a single, massive Jupyter Notebook for all the code.
 
-### `assets`
+### `input` and `ouput`
 
-Input `images` and `videos` for the image processing pipeline. The videos from the Project 6 - Advanced Lane Lines Detection, have been as well, to evaluate how this basic algorithm behaves with those other, harder, scenarios.
+Input and output `images` and `videos` for and from the image processing pipeline. The videos from the 5th project (Advanced Lane Lines Detection), have been as well to evaluate how this basic algorithm behaves with those other harder scenarios.
 
 ### `examples`
 
