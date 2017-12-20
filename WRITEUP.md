@@ -15,7 +15,7 @@ First of all, the results of the project can be found in YouTube:
 
 [step1]: ./output/images/001%20-%20Color%20Spaces.png "Color Spaces"
 [step2]: ./output/images/002%20-%20Filters.png "Filters"
-[step3]: ./output/images/003%20-%20Region%20-%20of%20-%20Interest.png "Region of Interest"
+[step3]: ./output/images/003%20-%20Region%20of%20Interest.png "Region of Interest"
 [step4]: ./output/images/004%20-%20Gaussian%20Blur.png "Gaussian Blur"
 [step5]: ./output/images/005%20-%20Canny%20Edge%20Detection.png "Canny Edge Detection"
 [step6]: ./output/images/006%20-%20Hough%20Transform.png "Hough Transform"
